@@ -14,6 +14,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
+    Route::post('registration', [\App\Http\Controllers\AuthController::class, 'registration']);
+    Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+    Route::post('refresh', [\App\Http\Controllers\AuthController::class, 'refresh']);
+    Route::post('me', [\App\Http\Controllers\AuthController::class, 'me']);
+    Route::post('activateEmail',[\App\Http\Controllers\AuthController::class,'getActivateEmail']);
+});
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'front',
+], function () {
+   Route::get('category',[\App\Http\Controllers\CategoriesController::class,'index']);
+    Route::post('category/find',[\App\Http\Controllers\CategoriesController::class,'show']);
+    Route::post('product/find',[\App\Http\Controllers\ProductController::class,'show']);
+});
+
+Route::group([
+    'prefix' => 'front',
+    'middleware' => 'jwt.verify'
+], function () {
+    Route::post('profile', [\App\Http\Controllers\ProfileController::class, 'index']);
+});
+
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => [
+        'jwt.verify',
+        'admin'
+    ]
+], function () {
+    Route::post('users/all',[\App\Http\Controllers\UsersController::class,'index']);
+    Route::post('category/save',[\App\Http\Controllers\CategoriesController::class,'edit']);
 });
