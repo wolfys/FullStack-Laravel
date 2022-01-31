@@ -16,7 +16,7 @@ class AlterPictureUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table
             ->string('picture')
-            ->default('nopicture.png')
+            ->default('/avatar/noavatar.jpg')
             ->nullable(false)
             ->change();
         });

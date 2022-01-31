@@ -25,6 +25,7 @@ Route::group([
     Route::post('me', [\App\Http\Controllers\AuthController::class, 'me']);
     Route::post('activateEmail',[\App\Http\Controllers\AuthController::class,'getActivateEmail']);
 });
+
 Route::group([
     'middleware' => 'api',
     'prefix' => 'front',
@@ -32,6 +33,7 @@ Route::group([
    Route::get('category',[\App\Http\Controllers\CategoriesController::class,'index']);
     Route::post('category/find',[\App\Http\Controllers\CategoriesController::class,'show']);
     Route::post('product/find',[\App\Http\Controllers\ProductController::class,'show']);
+    Route::get('product',[\App\Http\Controllers\ProductController::class,'all']);
 });
 
 Route::group([
@@ -50,4 +52,7 @@ Route::group([
 ], function () {
     Route::post('users/all',[\App\Http\Controllers\UsersController::class,'index']);
     Route::post('category/save',[\App\Http\Controllers\CategoriesController::class,'edit']);
+    Route::post('category/add',[\App\Http\Controllers\CategoriesController::class,'create']);
+    Route::post('product/add',[\App\Http\Controllers\ProductController::class,'create']);
+    Route::post('product/save',[\App\Http\Controllers\ProductController::class,'edit']);
 });

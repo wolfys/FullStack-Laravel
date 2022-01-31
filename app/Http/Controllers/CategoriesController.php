@@ -14,9 +14,40 @@ class CategoriesController extends Controller
         return Category::all();
     }
 
-    public function create()
+    public function create(Request $request): \Illuminate\Http\JsonResponse
     {
-        //
+        $request->validate([
+            'name' => 'required|string|unique:categories',
+            'description' => 'required|string'
+        ]);
+
+        $name = $request->get('name');
+        $description = $request->get('description');
+        $picture = 'category/noimage.jpeg';
+
+        if ($request->file('picture')) {
+            $request->validate([
+                'picture' => 'required|file|max:10240|mimes:jpg,png,gif,webp'
+            ]);
+            $fileName = time() . "_" . $request->file("picture")->getClientOriginalName();
+            $request->file("picture")->storeAs('category', $fileName, 'public');
+            $picture = "/category/" . $fileName;
+        }
+
+        DB::table('categories')
+            ->insert(
+                [
+                    'name' => $name,
+                    'description' => $description,
+                    'picture' => $picture,
+                    'created_at' => now()
+                ]);
+
+        return response()->json(
+            [
+                'message' => 'Категория успешно добавлена!',
+            ]
+        );
     }
 
     public function store(Request $request)
@@ -53,6 +84,9 @@ class CategoriesController extends Controller
             $fileName = time() . "_" . $request->file("picture")->getClientOriginalName();
             $request->file("picture")->storeAs('category', $fileName, 'public');
             $picture = "/category/" . $fileName;
+        } else {
+            $category_picture = DB::table('categories')->where('id', $id)->first();
+            $picture = $category_picture->picture;
         }
 
         DB::table('categories')
