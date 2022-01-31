@@ -46,6 +46,7 @@ Route::group([
     Route::post('profile/saveNewAvatar', [\App\Http\Controllers\ProfileController::class, 'saveNewAvatar']);
     Route::post('profile/saveNewStreet',[\App\Http\Controllers\AddressController::class,'saveNewStreet']);
     Route::post('profile/streetList',[\App\Http\Controllers\AddressController::class,'index']);
+    Route::post('profile/saveNewMainStreet',[\App\Http\Controllers\AddressController::class,'saveNewMainStreet']);
 });
 
 Route::group([

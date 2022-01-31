@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AddressController extends Controller
 {
@@ -33,5 +34,38 @@ class AddressController extends Controller
                 'message' => 'Адрес успешно добавлен.',
             ]
         );
+    }
+
+    public function saveNewMainStreet(Request $request) {
+
+        $request->validate([
+            'mainStreet' => 'required|integer'
+        ]);
+
+        $user_id =  auth()->user()->id;
+        $sql = DB::table('addresses')
+            ->where(
+                [
+                    ['user_id',$user_id],
+                    ['main',1]
+                ]
+            )->first();
+
+        $address = Address::find($sql->id);
+        $address->main = 0;
+        $address->save();
+
+        $new = $request->get('mainStreet');
+
+        $address_new = Address::find($new);
+        $address_new->main = 1;
+        $address_new->save();
+
+        return response()->json(
+            [
+                'message' => 'Главный адрес успешно обновлен.',
+            ]
+        );
+
     }
 }
