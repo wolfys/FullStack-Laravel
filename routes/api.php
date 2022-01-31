@@ -61,4 +61,5 @@ Route::group([
     Route::post('category/add',[\App\Http\Controllers\CategoriesController::class,'create']);
     Route::post('product/add',[\App\Http\Controllers\ProductController::class,'create']);
     Route::post('product/save',[\App\Http\Controllers\ProductController::class,'edit']);
+    Route::post('product/exportProduct',[\App\Http\Controllers\AdminController::class,'exportProduct']);
 });
