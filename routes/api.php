@@ -41,6 +41,11 @@ Route::group([
     'middleware' => 'jwt.verify'
 ], function () {
     Route::post('profile', [\App\Http\Controllers\ProfileController::class, 'index']);
+    Route::post('profile/saveMainInfo', [\App\Http\Controllers\ProfileController::class, 'saveMainInfo']);
+    Route::post('profile/saveNewPassword', [\App\Http\Controllers\ProfileController::class, 'saveNewPassword']);
+    Route::post('profile/saveNewAvatar', [\App\Http\Controllers\ProfileController::class, 'saveNewAvatar']);
+    Route::post('profile/saveNewStreet',[\App\Http\Controllers\AddressController::class,'saveNewStreet']);
+    Route::post('profile/streetList',[\App\Http\Controllers\AddressController::class,'index']);
 });
 
 Route::group([
